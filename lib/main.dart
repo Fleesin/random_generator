@@ -26,7 +26,7 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-  bool option = false;
+  int option = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +39,7 @@ class _Home extends State<Home> {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                option = true;
+                option = 1;
                 Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => variables(option, option:option)), // Navegar a la nueva pantalla
@@ -55,7 +55,7 @@ class _Home extends State<Home> {
             ),
             ElevatedButton(
               onPressed: () {
-                option = false;
+                option = 2;
                 Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => variables(option, option:option)), // Navegar a la nueva pantalla
@@ -71,25 +71,34 @@ class _Home extends State<Home> {
             ),
             ElevatedButton(
               onPressed: () {
-                // Aquí va el código que se ejecuta cuando se presiona el tercer botón
+                option = 3;
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => variables(option, option:option)), // Navegar a la nueva pantalla
+              );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50), // Establecer el tamaño del botón
               ),
               child: const Text(
-                'Generador 3', 
+                'Generador cuadrados medios', 
                 textAlign: TextAlign.center,
               ),
             ),
             ElevatedButton(
               onPressed: () {
-                // Aquí va el código que se ejecuta cuando se presiona el cuarto botón
+                
+                option = 4;
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => variables(option, option:option)), // Navegar a la nueva pantalla
+              );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50), // Establecer el tamaño del botón
               ),
               child: const Text(
-                'Generador 4', 
+                'Generador productos medios', 
                 textAlign: TextAlign.center,
               ),
             ),
