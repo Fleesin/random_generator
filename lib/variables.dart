@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'numbers.dart';
+import 'main.dart';
 
 // ignore: camel_case_types
 class variables extends StatelessWidget {
@@ -8,7 +9,8 @@ class variables extends StatelessWidget {
   final TextEditingController _controller2 = TextEditingController();
   final TextEditingController _controller3 = TextEditingController();
   final TextEditingController _controller4 = TextEditingController();
-  variables({super.key});
+  final bool option;
+  variables(bool option_, {super.key, required this.option});
   @override
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
@@ -35,7 +37,6 @@ class variables extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         
         children: <Widget>[
-          
           SizedBox(
             width: 100.0,
             child: Align(
@@ -71,23 +72,24 @@ class variables extends StatelessWidget {
               ),
             ),
           ),
+          if (option)
           SizedBox(
-            width: 100.0,
-            child: Align(
-              alignment: const Alignment(0.3, -0.8),
-              child: TextField(
-                controller: _controller3,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'c',
+              width: 100.0,
+              child: Align(
+                alignment: const Alignment(0.3, -0.8),
+                child: TextField(
+                  controller: _controller3,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'c',
+                  ),
                 ),
               ),
-            ),
-          ),
+            ),         
           SizedBox(
             width: 100.0,
             child: Align(

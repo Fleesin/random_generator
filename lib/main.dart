@@ -26,6 +26,7 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
+  bool option = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,9 +39,10 @@ class _Home extends State<Home> {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
+                option = true;
                 Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => variables()), // Navegar a la nueva pantalla
+                MaterialPageRoute(builder: (context) => variables(option, option:option)), // Navegar a la nueva pantalla
               );// Aquí va el código que se ejecuta cuando se presiona el primer botón
               },
               style: ElevatedButton.styleFrom(
@@ -53,7 +55,11 @@ class _Home extends State<Home> {
             ),
             ElevatedButton(
               onPressed: () {
-                // Aquí va el código que se ejecuta cuando se presiona el segundo botón
+                option = false;
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => variables(option, option:option)), // Navegar a la nueva pantalla
+              );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50), // Establecer el tamaño del botón

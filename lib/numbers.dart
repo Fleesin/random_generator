@@ -47,7 +47,7 @@ void exportList(List<int> list, String filename){
       body: Column(
             children: <Widget>[
               Text(
-              "X_0 es $x \t a es $a \t c es $c \t m es $m"
+              "X_0 = $x \t a = $a \t c = $c \t m = $m"
               ),
               const Text('NÚMEROS GENERADOS'),
               Expanded(
@@ -69,7 +69,5 @@ void exportList(List<int> list, String filename){
           )
     );
   }
-
-  
 
 }
