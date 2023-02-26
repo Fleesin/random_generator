@@ -40,7 +40,7 @@ class _Home extends State<Home> {
               onPressed: () {
                 Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const variables()), // Navegar a la nueva pantalla
+                MaterialPageRoute(builder: (context) => variables()), // Navegar a la nueva pantalla
               );// Aquí va el código que se ejecuta cuando se presiona el primer botón
               },
               style: ElevatedButton.styleFrom(
