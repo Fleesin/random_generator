@@ -104,24 +104,33 @@ class _Home extends State<Home> {
             ),
             ElevatedButton(
               onPressed: () {
-                // Aquí va el código que se ejecuta cuando se presiona el quinto botón
+                  option = 5;
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => variables(option, option:option)), // Navegar a la nueva pantalla
+                );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50), // Establecer el tamaño del botón
               ),
               child: const Text(
-                'Generador 5', 
+                'Generador cuadrático no lineal', 
                 textAlign: TextAlign.center,
               ),
             ),
             ElevatedButton(
               onPressed: () {
+                option = 6;
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => variables(option, option:option)), // Navegar a la nueva pantalla
+                );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50), // Establecer el tamaño del botón
               ),
               child: const Text(
-                'Generador 6', 
+                'Generador multiplicador constante', 
                 textAlign: TextAlign.center,
               ),
             ),
