@@ -47,7 +47,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  msix: ^3.8.2
 
+msix_config:
+  display_name: Generador pseudoaleatorio
+  publisher_display_name: yo
+  identity_name: yoylospanas
+  msix_version: 1.0.0.0
+  
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
