@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:excel/excel.dart';
@@ -164,10 +162,8 @@ void exportList(List<int> list, String filename){
                   },),
                 ),
               )
-              
             ],
           )
-          
     );
   }
 }
