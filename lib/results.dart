@@ -39,6 +39,7 @@ Resultado statistics_inter(List<double> lista, intervals) {
   }
   return Resultado(X_0, exact_pvalue, message);
 }
+
 double statistics_prom (List<double> lista, data){
   double promedio, Z;
   final suma = lista.reduce((valorAcumulado, elemento) => valorAcumulado + elemento);
@@ -47,10 +48,27 @@ double statistics_prom (List<double> lista, data){
   return (promedio);
 }
 
+List<double> kolmogorov (List<double> lista){
+  List <double> sort_list = lista;
+  var Fn = <double>[];
+  var F = <double>[];
+  sort_list.sort();
+
+  for (int i = 0;  i  <= sort_list.length; i++){
+    Fn.add((i+1)/sort_list.length);
+  }
+  for (int i = 0;  i  < sort_list.length; i++){
+    F.add(Fn[i] - sort_list[i]);
+  }
+
+  double mayor = F.reduce((a, b) => a>b ? a:b);
+  
+  return F;
+}
+
 class results extends StatelessWidget {
   final int option, interval;
   const results({super.key, required this.option, required this.interval});
-  
   
   @override
   Widget build(BuildContext context) {
@@ -61,25 +79,31 @@ class results extends StatelessWidget {
     final data = hoja?.rows.map((row) => row[0]?.value).where((valor) => valor is num).toList() ?? [];
     final lista = <int>[];
     var lista0 = <double>[];
+    var sort_list = <double>[];
     for (final row in data) {
       print(row);
       lista.add(row);
     }
     int mayor = lista.reduce((a, b) => a>b ? a:b);
     lista0 = lista.map((elemento) => elemento / (mayor + 1)).toList();
-    double promedio, Z0, Z, X0, p_value;
-    String mensaje;
+    double promedio = 0, Z0 = 0, Z, X0 = 0, p_value = 0;
+    String mensaje = '';
     promedio = statistics_prom(lista0, data);
     Z = ((promedio - 0.5)*sqrt(lista.length))/sqrt(1/12);
-    var met_inter= statistics_inter(lista0, interval);
-    // ignore: non_constant_identifier_names
-    Z0 = Z.abs();
-
-    X0 = met_inter.x0;
-    p_value = met_inter.exact_pvalue;
-    mensaje = met_inter.message;
-
-
+    
+    if(option == 2){
+      var met_inter= statistics_inter(lista0, interval);
+      // ignore: non_constant_identifier_names
+      Z0 = Z.abs();
+      X0 = met_inter.x0;
+      p_value = met_inter.exact_pvalue;
+      mensaje = met_inter.message;
+    }
+    if(option == 3){
+      sort_list = kolmogorov(lista0);
+    }
+    
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Resultados estadísticos'),
@@ -91,6 +115,20 @@ class results extends StatelessWidget {
           if (option == 2)
           Center(
             child: Text('$mensaje ya que X_0 es $X0 y el valor de chi cuadrado para ese intervalo es $p_value'),
+          ),
+          if (option == 3)
+          Expanded(
+            child: SingleChildScrollView(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+              itemCount: lista.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(sort_list[index].toString()),
+                );
+              },),
+            ),
           ),
           if(option == option)
           Expanded(
