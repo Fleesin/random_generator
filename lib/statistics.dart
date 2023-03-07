@@ -62,7 +62,7 @@ class statistics extends StatelessWidget {
                 fixedSize: const Size(200, 50), // Establecer el tamaño del botón
               ),
               child: const Text(
-                'Option 3', 
+                'Prueba de Kolmogorov-Smirnov', 
                 textAlign: TextAlign.center,
               ),
             ),

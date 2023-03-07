@@ -48,22 +48,42 @@ double statistics_prom (List<double> lista, data){
   return (promedio);
 }
 
-List<double> kolmogorov (List<double> lista){
+class Kolmogorov {
+  final double Dn;
+  final double dn;
+  final String message;
+  final List<double> sort_list;
+  Kolmogorov(this.Dn, this.dn, this.message, this.sort_list);
+}
+
+Kolmogorov kolmogorov (List<double> lista){
   List <double> sort_list = lista;
   var Fn = <double>[];
   var F = <double>[];
+  String message;
   sort_list.sort();
-
   for (int i = 0;  i  <= sort_list.length; i++){
     Fn.add((i+1)/sort_list.length);
   }
   for (int i = 0;  i  < sort_list.length; i++){
     F.add(Fn[i] - sort_list[i]);
   }
+  double exact_value = 0;
 
-  double mayor = F.reduce((a, b) => a>b ? a:b);
-  
-  return F;
+  double Dn = F.reduce((a, b) => a>b ? a:b);
+  print(Dn);
+  double dn = 1.36/sqrt(sort_list.length);
+  print(dn);
+
+  if (dn < exact_value){
+    message = ('los números siguen una función de distribución uniforme');
+    
+  }
+  else{
+    message = ('los números no siguen una función de distribución uniforme');
+    
+  }
+  return(Kolmogorov(Dn, dn, message, sort_list));
 }
 
 class results extends StatelessWidget {
@@ -80,27 +100,31 @@ class results extends StatelessWidget {
     final lista = <int>[];
     var lista0 = <double>[];
     var sort_list = <double>[];
+
     for (final row in data) {
       print(row);
       lista.add(row);
     }
     int mayor = lista.reduce((a, b) => a>b ? a:b);
     lista0 = lista.map((elemento) => elemento / (mayor + 1)).toList();
-    double promedio = 0, Z0 = 0, Z, X0 = 0, p_value = 0;
+    double promedio = 0, Z0, Z, X0 = 0, p_value = 0, Dn= 0, dn = 0;
     String mensaje = '';
     promedio = statistics_prom(lista0, data);
     Z = ((promedio - 0.5)*sqrt(lista.length))/sqrt(1/12);
-    
+    Z0 = Z.abs();
     if(option == 2){
       var met_inter= statistics_inter(lista0, interval);
       // ignore: non_constant_identifier_names
-      Z0 = Z.abs();
       X0 = met_inter.x0;
       p_value = met_inter.exact_pvalue;
       mensaje = met_inter.message;
     }
     if(option == 3){
-      sort_list = kolmogorov(lista0);
+      var kolm_smirnov = kolmogorov(lista0);
+      Dn = kolm_smirnov.Dn;
+      dn = kolm_smirnov.dn;
+      mensaje = kolm_smirnov.message;
+      sort_list = kolm_smirnov.sort_list;
     }
     
     
@@ -114,9 +138,10 @@ class results extends StatelessWidget {
           Text('\n\n El promedio es de $promedio \n \n El |Z_0| es de $Z0'),
           if (option == 2)
           Center(
-            child: Text('$mensaje ya que X_0 es $X0 y el valor de chi cuadrado para ese intervalo es $p_value'),
+            child: Text('\n\n $mensaje ya que X_0 es $X0 y el valor de chi cuadrado para ese intervalo es $p_value'),
           ),
           if (option == 3)
+          Text('\n\n Dn es $Dn dn es de $dn el valor de la tabla para estos datos $mensaje'),
           Expanded(
             child: SingleChildScrollView(
               child: ListView.builder(
