@@ -31,11 +31,9 @@ Resultado statistics_inter(List<double> lista, intervals) {
 
   if (X_0 < exact_pvalue){
     message = ('No se pueden rechazar que los números siguen una función de distribución uniforme');
-    
   }
   else{
     message = ('Los números no siguen una función de distribución uniforme');
-    
   }
   return Resultado(X_0, exact_pvalue, message);
 }
@@ -69,7 +67,6 @@ Kolmogorov kolmogorov (List<double> lista){
     F.add(Fn[i] - sort_list[i]);
   }
   double exact_value = 0;
-
   double Dn = F.reduce((a, b) => a>b ? a:b);
   print(Dn);
   double dn = 1.36/sqrt(sort_list.length);
@@ -77,13 +74,94 @@ Kolmogorov kolmogorov (List<double> lista){
 
   if (dn < exact_value){
     message = ('los números siguen una función de distribución uniforme');
-    
   }
   else{
-    message = ('los números no siguen una función de distribución uniforme');
-    
+    message = ('los números no siguen una función de distribución uniforme');  
   }
   return(Kolmogorov(Dn, dn, message, sort_list));
+}
+
+class Poker {
+  List<double> listaP ;
+  
+
+  Poker(this.listaP);
+}
+
+Poker poker (List<int> lista){
+  List <int> list = lista; //Lista de números pseudoaleatorios
+  List<String> digitos = [], lista_str = []; //Para almacenar los digitos del número
+  List<int> digInt = [], fo = []; //Digitos en int
+  List<double> prueba = [], fe = [], x2 = []; //Valores obtenidos de la prueba
+  List<double> probabilidad = [0.0001, 0.0045, 0.009, 0.072, 0.108, 0.504, 0.3024];
+  int a1 = 0, a2 = 0, t = 0, m1 = 0;
+  double x2Sum;
+
+  for(int i=0; i < 7; i++){ 
+    fo.add(0);
+  }
+
+
+  for (var numero in list) {
+    String lista = numero.toString();
+    String fiveDigitsStr = lista.substring(0, 5);
+    lista_str.add(fiveDigitsStr);
+  }
+  
+
+  //Ciclo para analizar cada uno de los números pseudoaleatorios
+  for(int r=0; r < lista_str.length; r++){ 
+    digitos = lista_str[r].split("");
+
+    digInt = digitos.map((str) => int.parse(str)).toList();
+
+    for(int g = 0; g < digInt.length - 1; g++){
+      for(int c = g+1; c < digInt.length ; c++){
+        if(digInt[g] == digInt[c]){
+          if(a1 == 0){a1++; m1 = digInt[g];}
+          else if(a1 > 0 && digInt[g] == m1){a1++;}
+          else if (a1 > 0 && digInt[g] != m1){a2++;}
+        } 
+        if(t == 4){
+          if(a1 == 10){ g = digInt.length; a1 = 5;} 
+          else if(a1 == 6){ g = digInt.length; a1 = 4;}
+          else {t = c + 1;}
+        }else{ t++;}
+      }    
+    }
+
+  //Ver si son todos los números diferentes, 1 par, 2 pares, 1 full, 1 tercia, 1 poker o 1 quintilla
+    switch(a1){  
+      case 0: { fo[6] += 1; break;}
+      case 1: { if(a2 == 0){ fo[5] += 1;} else if(a2 == 1){ fo[4] += 1;} else{ fo[2] += 1;} break;}  
+      case 3: { if(a2 == 0){ fo[3] += 1;} else{ fo[2] += 1;} break;}
+      case 4: { fo[1] += 1; break;}
+      case 5: { fo[0] += 1; break;}
+    }
+    print(fo);
+  }
+  
+  for(int i=0; i < 6; i++){ 
+    fe.add(lista_str.length * probabilidad[i]);
+  }
+  for(int i=0; i < 6; i++){ 
+    x2.add(pow(fo[i]-fe[i], 2)/fe[i]);
+  }
+  x2Sum = x2.reduce((a, b) => a + b);
+  return Poker(prueba);
+}
+int coefBinomial(int n, int k) {
+  if (k < 0 || k > n) {
+    return 0;
+  }
+
+  int resultado = 1;
+  for (int i = 1; i <= k; i++) {
+    resultado *= (n - i + 1);
+    resultado ~/= i;
+  }
+
+  return resultado;
 }
 
 class results extends StatelessWidget {
@@ -98,7 +176,7 @@ class results extends StatelessWidget {
     final hoja = excel.tables['Sheet1'];
     final data = hoja?.rows.map((row) => row[0]?.value).where((valor) => valor is num).toList() ?? [];
     final lista = <int>[];
-    var lista0 = <double>[];
+    var lista0, listpoker = <double>[];
     var sort_list = <double>[];
 
     for (final row in data) {
@@ -126,8 +204,10 @@ class results extends StatelessWidget {
       mensaje = kolm_smirnov.message;
       sort_list = kolm_smirnov.sort_list;
     }
-    
-    
+    if(option == 4){
+      var _poker = poker(lista);
+      listpoker = _poker.listaP;
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Resultados estadísticos'),
@@ -142,6 +222,7 @@ class results extends StatelessWidget {
           ),
           if (option == 3)
           Text('\n\n Dn es $Dn dn es de $dn el valor de la tabla para estos datos $mensaje'),
+          if (option == 3)
           Expanded(
             child: SingleChildScrollView(
               child: ListView.builder(
@@ -151,6 +232,20 @@ class results extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text(sort_list[index].toString()),
+                );
+              },),
+            ),
+          ),
+          if (option == 4)
+          Expanded(
+            child: SingleChildScrollView(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+              itemCount: lista.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(listpoker[index].toString()),
                 );
               },),
             ),

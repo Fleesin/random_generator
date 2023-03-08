@@ -22,7 +22,8 @@ List<int> cuadradoMedio(int semilla, int n) {
   String d2, d3;
   int x2, tam2, extraer, gen, tam1;
   tam1 = semilla.toString().length;
-  for (int i = 1; i <= n; i++) {
+  for (int i = 0; i < n; i++) {
+    extraer = 0;
     x2 = x * x;
     d2 = x2.toString();
     tam2 = d2.length;
@@ -30,7 +31,10 @@ List<int> cuadradoMedio(int semilla, int n) {
     d3 = d2.substring(extraer, extraer + tam1);
     gen = int.parse(d3);
     numerosAleatorios.add(gen);
-    x = gen;   
+    x = gen;
+    if(x == 0){
+      break;
+    }
   }
   return numerosAleatorios;
 }
@@ -51,7 +55,10 @@ List<int> productosMedios(int semilla1, int semilla2, int n) {
     numerosAleatorios.add(gen);
     extraer = 0;
     x1 = x2;
-    x2 = gen;  
+    x2 = gen;
+    if(x2 ==  0){
+      break;
+    } 
   }
   return numerosAleatorios;
 }
@@ -72,7 +79,10 @@ List<int> multiplicadorConstante(int semilla, int a, int n) {
       gen = int.parse(d3);
       numerosGenerados.add(gen);
       extraer = 0;
-      a = gen; 
+      a = gen;
+      if(a ==  0){
+      break;
+    }  
     }
     return numerosGenerados;
   }
@@ -100,30 +110,25 @@ void exportList(List<int> list, String filename){
   file.writeAsBytesSync(excel.encode()!);
 }
 
-
   @override
   Widget build(BuildContext context) {
     
     List<int> numGenerator = [];
-
     if(option == 1 || option == 2) {
       numGenerator = congruencialMixto(a, c, m, x, 100);
     }
     if(option == 3) {
-      numGenerator = cuadradoMedio(x, 20);
+      numGenerator = cuadradoMedio(x, 100);
     }
     if(option == 4) {
-      numGenerator = productosMedios(x, x1, 20);
+      numGenerator = productosMedios(x, x1, 100);
     }
     if(option == 5) {
-      numGenerator = congruenciaCuadratica(x, a, b, m, 20, c);
+      numGenerator = congruenciaCuadratica(x, a, b, m, 100, c);
     }
     if(option == 6) {
-      numGenerator = multiplicadorConstante(x, a, 20);
+      numGenerator = multiplicadorConstante(x, a, 100);
     }
-    
-    
-    
     // ignore: no_leading_underscores_for_local_identifiers
     return Scaffold(
       appBar: AppBar(
@@ -140,30 +145,29 @@ void exportList(List<int> list, String filename){
         child: const Icon(Icons.archive_outlined),
       ), 
       body: Column(
-        
-            children: <Widget>[
-              // Text(
-              // "X_0 = $x \t a = $a \t c = $c \t m = $m"
-              // ),
-              const Text('NÚMEROS GENERADOS'),
-              
-              Expanded(
-                child: SingleChildScrollView(
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                  // Especificamos la cantidad de elementos que tendrá la lista
-                  itemCount: numGenerator.length,
-                  // Definimos cómo se construirá cada elemento de la lista
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title: Text(numGenerator[index].toString()),
-                    );
-                  },),
-                ),
-              )
-            ],
+        children: <Widget>[
+          // Text(
+          // "X_0 = $x \t a = $a \t c = $c \t m = $m"
+          // ),
+          const Text('NÚMEROS GENERADOS'),
+          
+          Expanded(
+            child: SingleChildScrollView(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+              // Especificamos la cantidad de elementos que tendrá la lista
+              itemCount: numGenerator.length,
+              // Definimos cómo se construirá cada elemento de la lista
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(numGenerator[index].toString()),
+                );
+              },),
+            ),
           )
+        ],
+      )
     );
   }
 }

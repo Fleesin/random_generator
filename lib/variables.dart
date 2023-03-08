@@ -114,20 +114,35 @@ class variables extends StatelessWidget {
           int m = int.tryParse(_controller4.text) ?? 0;
           int x1 = int.tryParse(_controller5.text) ?? 0;
           int b = int.tryParse(_controller6.text) ?? 0;
-          
-          
-          
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) =>  numbers(x0, x:x0, a:a, b:b, c:c, m:m, option:option, x1: x1)),
           );
-          mvalid(context, x0, a, b, c, m, option, x1);
-          avalid(context, x0, a, b, c, m, option, x1);
-          cvalid(context, x0, a, b, c, m, option, x1);
-          xvalid(context, x0, a, b, c, m, option, x1);
-          fourdigits(context, x0, a, b, c, m, option, x1);
-          esprimo(context, x0, a, b, c, m, option, x1);
-          
+          if(option == 1){
+            esprimo(context, x0, a, b, c, m, option, x1);
+            mvalid(context, x0, a, b, c, m, option, x1);
+            avalid(context, x0, a, b, c, m, option, x1);
+            cvalid(context, x0, a, b, c, m, option, x1);
+            xvalid(context, x0, a, b, c, m, option, x1);
+          }
+          if(option == 2){
+            esprimo(context, x0, a, b, c, m, option, x1);
+            xvalid(context, x0, a, b, c, m, option, x1);
+            avalid(context, x0, a, b, c, m, option, x1);
+            mvalid(context, x0, a, b, c, m, option, x1);
+          }
+          if(option == 3 || option == 4 || option == 6){
+            fourdigits(context, x0, a, b, c, m, option, x1);
+          }
+
+          if(option == 5){
+            esprimo(context, x0, a, b, c, m, option, x1);
+            xvalid(context, x0, a, b, c, m, option, x1);
+            mvalid(context, x0, a, b, c, m, option, x1);
+            avalid(context, x0, a, b, c, m, option, x1);
+            cvalid(context, x0, a, b, c, m, option, x1);
+
+          }
         },
         tooltip: 'Generar',
         child: const Icon(Icons.arrow_forward_rounded),
@@ -249,13 +264,12 @@ class variables extends StatelessWidget {
     );
   }
 }
-
 // ignore: non_constant_identifier_names
 void _Alert(BuildContext context, x0, a, b, c, m , option, x1) {
   // Configura el AlertDialog
   AlertDialog dialog = AlertDialog(
     title: const Text('Advertencia'),
-    content: const Text('Alguna de las varibles no es primo'),
+    content: const Text('Alguna de las varibles no es primo'),  
     actions: [
       TextButton(
         child: const Text('Continuar'),
@@ -265,7 +279,6 @@ void _Alert(BuildContext context, x0, a, b, c, m , option, x1) {
             context,
             MaterialPageRoute(builder: (context) =>  numbers(x0, x:x0, a:a, b:b, c:c, m:m, option:option, x1: x1)),
           );
-          
         },
       ),
     ],

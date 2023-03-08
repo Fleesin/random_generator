@@ -69,16 +69,16 @@ class statistics extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                   option = 4;
-                //   Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => results(option:option)), // Navegar a la nueva pantalla
-                // );
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => results(option:option, interval: interval)), // Navegar a la nueva pantalla
+                );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50), // Establecer el tamaño del botón
               ),
               child: const Text(
-                'Option 4', 
+                'Prueba de Poker', 
                 textAlign: TextAlign.center,
               ),
             ),
