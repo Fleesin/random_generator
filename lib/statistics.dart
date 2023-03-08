@@ -11,7 +11,7 @@ class statistics extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Generadores'),
+        title: const Text('Pruebas Estadísticas'),
       ),
       body: Center(
         child: Column(
@@ -85,16 +85,16 @@ class statistics extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                   option = 5;
-                //   Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => results(option:option)), // Navegar a la nueva pantalla
-                // );
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => results(option:option, interval: interval)), // Navegar a la nueva pantalla
+                );
               },
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50), // Establecer el tamaño del botón
               ),
               child: const Text(
-                'Option 5', 
+                'Prueba de las corridas', 
                 textAlign: TextAlign.center,
               ),
             ),
