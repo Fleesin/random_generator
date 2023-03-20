@@ -311,37 +311,44 @@ class results extends StatelessWidget {
             child: Text('\n\n Para Quintilla, Poker, Full, Tercia, 2 Pares, 1 Par y Todos diferentes tenemos respectivamente los valores de Fo y Fe. Y $x2Sum es el estadístico producido al comparar la frecuencia observada con la frecuencia esperada'),
           ),
           if (option == 4)
-          Row(
-            children: <Widget>[
-              const Text('Frecuencia esperada'),
-              Expanded( 
-                child: SingleChildScrollView(
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                  itemCount: fe.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title: Text(fe[index].toString()),
-                    );
-                  },),
-                ),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Row(
+                children: [
+                  Expanded( 
+                    child: Column(children: [
+                      const Text('Frecuencia esperada'),
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: fe.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: Text('$index)'),
+                            title: Text(fe[index].toString()),
+                          );
+                      },),
+                    ],)
+                  ),
+                  Expanded( 
+                    child: Column(children: [
+                      const Text('Frecuencia observada'),
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: fo.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: Text('$index)'),
+                            title: Text(fo[index].toString()),
+                          );
+                      },),
+                    ],)
+                  ),
+                ],
               ),
-              const Text('Frecuencia observada'),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: fo.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(fo[index].toString()),
-                      );
-                  },),
-                ),
-              ),
-            ],
+            ),
           ),
           
           if (option == 5)
