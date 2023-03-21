@@ -49,7 +49,8 @@ class Poisson {
   List<double> lista ;
   List<double> limSup ;
   List<double> limInf ;
-  Poisson(this.lista, this.limInf, this.limSup);
+  List<int> listeva = [];
+  Poisson(this.lista, this.limInf, this.limSup, this.listeva);
 }
 
 Poisson poisson(List<double> lista0, int lambda){
@@ -58,6 +59,9 @@ Poisson poisson(List<double> lista0, int lambda){
   List<double> lista1 = [];
   List<double> limInf= [];
   List<double> limSup = [];
+  List<List<double>> intervals = [];
+  List<int> listeva = [];
+  int contador = 0;
   for(int i = 0; i <= 50; i++){
     if(i != 0){
       limInf.add(limSup[i-1]);
@@ -75,9 +79,26 @@ Poisson poisson(List<double> lista0, int lambda){
     lista1.add(x);
     if(limSup[i] >= 0.99 && limInf[i] >= 0.99){
       break;
-    }  
+    }
+    
   }
-  return (Poisson(lista1, limInf, limSup));
+  for(int i = 0; i <limInf.length; i++){
+    List<double> sublist = [];
+    sublist.add(limInf[i]);
+    sublist.addAll(limSup.sublist(i, i+1));
+    intervals.add(sublist);
+  }
+  
+  for(int i = 0; i < lista0.length; i++){
+    for(int k = 0; k < limInf.length; k++){
+      if(lista0[i] >= limInf[k] && lista0[i] < limSup[k]){
+        listeva.add(k);
+      }
+    }
+  }
+  print(listeva);
+  
+  return (Poisson(lista1, limInf, limSup, listeva));
 }
 
 class resultsnoUNiform extends StatelessWidget {
@@ -96,7 +117,7 @@ class resultsnoUNiform extends StatelessWidget {
     var limInf = <double>[];
     var lista1 = <double>[];
     var lista0 = <double>[];
-    
+    var listeva = <int>[];
     
     for (final row in data) {
       print(row);
@@ -123,6 +144,7 @@ class resultsnoUNiform extends StatelessWidget {
       limSup = met_poisson.limSup;
       limInf = met_poisson.limInf;
       lista1 = met_poisson.lista;
+      listeva = met_poisson.listeva;
     }
     return Scaffold(
       appBar: AppBar(
@@ -130,36 +152,60 @@ class resultsnoUNiform extends StatelessWidget {
       ),
       body: Column(
         children: <Widget> [
-          const Text('Números generados'),
           Expanded(
             child: SingleChildScrollView(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-              itemCount: lista1.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: Text('$index)'),
-                  title: Text(lista1[index].toString()),
-                );
-              },),
-            ),
-          ),
-          if(option == 1 || option == 2)
-          const Text('R'),
-          if(option == 1 || option == 2)
-          Expanded(
-            child: SingleChildScrollView(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-              itemCount: lista0.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: Text('$index)'),
-                  title: Text(lista0[index].toString()),
-                );
-              },),
+              scrollDirection: Axis.vertical,
+              child: Row(
+                children: [
+                  Expanded( 
+                    child: Column(children: [
+                      const Text('R'),
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: lista0.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: Text('$index)'),
+                            title: Text(lista0[index].toString()),
+                          );
+                      },),
+                    ],)
+                  ),
+                  if(option == 1|| option == 2)
+                  Expanded( 
+                    child: Column(children: [
+                      const Text('Números generados'),
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: lista1.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: Text('$index)'),
+                            title: Text(lista1[index].toString()),
+                          );
+                      },),
+                    ],)
+                  ),
+                  if(option == 3)
+                  Expanded( 
+                    child: Column(children: [
+                      const Text('R evaluada'),
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: listeva.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: Text('$index)'),
+                            title: Text(listeva[index].toString()),
+                          );
+                      },),
+                    ],)
+                  ),
+                ],
+              ),
             ),
           ),
           if (option == 3)
@@ -168,6 +214,21 @@ class resultsnoUNiform extends StatelessWidget {
               scrollDirection: Axis.vertical,
               child: Row(
                 children: [
+                  Expanded( 
+                    child: Column(children: [
+                      const Text('F(x)'),
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: lista1.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            leading: Text('$index)'),
+                            title: Text(lista1[index].toString()),
+                          );
+                      },),
+                    ],)
+                  ),
                   Expanded( 
                     child: Column(children: [
                       const Text('Límite inferior'),
