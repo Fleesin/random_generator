@@ -1,10 +1,38 @@
 import 'dart:math';
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:random_generator/resutlsnoUniform.dart';
 import 'numbers.dart';
 
 
+class DecimalTextInputFormatter extends TextInputFormatter {
+  DecimalTextInputFormatter({this.decimalRange}) : assert(decimalRange == null || decimalRange > 0);
+
+  final int? decimalRange;
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    TextSelection newSelection = newValue.selection;
+    String truncated = newValue.text;
+
+    if (decimalRange != null) {
+      String value = newValue.text;
+
+      if (value.contains(".")) {
+        List<String> split = value.split(".");
+        if (split.length == 2 && split.last.length > decimalRange!) {
+          truncated = "${split.first}.${split.last.substring(0, decimalRange)}";
+        }
+      }
+    }
+
+    return TextEditingValue(
+      text: truncated,
+      selection: TextSelection.collapsed(offset: newSelection.extentOffset),
+    );
+  }
+}
 // ignore: camel_case_types
 class vbleNoUn extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
@@ -27,10 +55,11 @@ class vbleNoUn extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () { 
           
-          int media = int.tryParse(_controller.text) ?? 0;
+          double media = double.tryParse(_controller.text) ?? 0;
           int a = int.tryParse(_controller2.text) ?? 0;
           int b = int.tryParse(_controller3.text) ?? 0;
-          int lambda = int.tryParse(_controller4.text) ?? 0;
+          double lambda = double.tryParse(_controller4.text) ?? 0;
+          
 
           Navigator.push(
             context,  
@@ -48,11 +77,12 @@ class vbleNoUn extends StatelessWidget {
             width: 100.0,
             child: Align(
               alignment: const Alignment(0.3, -0.8),
-              child: TextField(
+              child: TextFormField(
                 controller: _controller,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                  DecimalTextInputFormatter(decimalRange: 2),
                 ],
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -104,9 +134,10 @@ class vbleNoUn extends StatelessWidget {
               alignment: const Alignment(0.3, -0.8),
               child: TextField(
                 controller: _controller4,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
                   inputFormatters: <TextInputFormatter>[
-                   FilteringTextInputFormatter.digitsOnly
+                   FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                   DecimalTextInputFormatter(decimalRange: 2),
                  ],
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),

@@ -29,6 +29,7 @@ List<double> uniforme (List<double> lista0, a, b){
   }
   return (lista1);
 }
+
 BigInt factorial(int k) {
   // TODO: Faster algorithm
   if (k < 0) {
@@ -45,6 +46,7 @@ BigInt factorial(int k) {
   }
   return result;
 }
+
 class Poisson {
   List<double> lista ;
   List<double> limSup ;
@@ -53,7 +55,7 @@ class Poisson {
   Poisson(this.lista, this.limInf, this.limSup, this.listeva);
 }
 
-Poisson poisson(List<double> lista0, int lambda){
+Poisson poisson(List<double> lista0, double lambda){
   double x = 0, e, e2;
   BigInt den;
   List<double> lista1 = [];
@@ -62,33 +64,28 @@ Poisson poisson(List<double> lista0, int lambda){
   List<List<double>> intervals = [];
   List<int> listeva = [];
   int contador = 0;
-  for(int i = 0; i <= 50; i++){
+
+  for(int i = 0; i <= 100; i++){
+
     if(i != 0){
       limInf.add(limSup[i-1]);
     }
     else{
       limInf.add(0);
     }
-    BigInt lam = BigInt.from(lambda);
+
+    double lam = lambda;
     e = exp(-lambda);
-    e2 = lam.pow(i).toDouble();
+    e2 = pow(lam, i).toDouble();
     den = factorial(i);
     x = (e*e2)/den.toDouble();
-    // x = (exp(lambda)*pow(lambda, i))/(factorial(i));
+    // x = (exp(-lambda)*pow(lambda, i))/(factorial(i));
     limSup.add(limInf[i] + x);
     lista1.add(x);
     if(limSup[i] >= 0.99 && limInf[i] >= 0.99){
       break;
     }
-    
   }
-  for(int i = 0; i <limInf.length; i++){
-    List<double> sublist = [];
-    sublist.add(limInf[i]);
-    sublist.addAll(limSup.sublist(i, i+1));
-    intervals.add(sublist);
-  }
-  
   for(int i = 0; i < lista0.length; i++){
     for(int k = 0; k < limInf.length; k++){
       if(lista0[i] >= limInf[k] && lista0[i] < limSup[k]){
@@ -96,13 +93,13 @@ Poisson poisson(List<double> lista0, int lambda){
       }
     }
   }
+  print(lambda);
   print(listeva);
-  
   return (Poisson(lista1, limInf, limSup, listeva));
 }
-
 class resultsnoUNiform extends StatelessWidget {
-  final int option, media, a, b, lambda;
+  final int option, a, b;
+  final double media, lambda;
   const resultsnoUNiform({super.key, required this.option, required this.media, required this.a, required this.b, required this.lambda});
   @override
   Widget build(BuildContext context) {

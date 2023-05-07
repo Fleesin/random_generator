@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:random_generator/results.dart';
 import 'package:random_generator/vbleNoUniform.dart';
 
 

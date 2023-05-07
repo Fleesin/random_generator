@@ -97,14 +97,24 @@ List<int> congruenciaCuadratica(int semilla, int a, int b, int m, int n, int c) 
     return numerosGenerados;
   }
 void exportList(List<int> list, String filename){ 
-  final excel = Excel.createExcel();
+  final file = File(filename);
+  var excel = Excel.createExcel();
+  
+  if(file.existsSync()){
+    excel = Excel.decodeBytes(file.readAsBytesSync());
+  }else{
+    excel = Excel.createExcel();
+  }
   final sheet = excel['Sheet1'];
+  final column = sheet.maxCols;
   sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0)).value = 'Números';
   for (int i = 0; i < list.length; i++){
-    final cellIndex = CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i+1);
+    final cellIndex = CellIndex.indexByColumnRow(columnIndex: column, rowIndex: i+1);
     sheet.cell(cellIndex).value = list[i];
   }
-  final file = File(filename);
+  
+  
+  
   file.existsSync();
   File(filename).create(recursive:true);
   file.writeAsBytesSync(excel.encode()!);
@@ -113,21 +123,31 @@ void exportList(List<int> list, String filename){
   @override
   Widget build(BuildContext context) {
     
-    List<int> numGenerator = [];
+    List<int> numGenerator1 = [];
+    List<int> numGenerator2 = [];
+    List<int> numGenerator3 = [];
+    List<int> numGenerator4 = [];
+    List<int> numGenerator5 = [];
+    List<int> printnum = [];
     if(option == 1 || option == 2) {
-      numGenerator = congruencialMixto(a, c, m, x, 100);
+      numGenerator1 = congruencialMixto(a, c, m, x, 500);
+      printnum = numGenerator1;
     }
     if(option == 3) {
-      numGenerator = cuadradoMedio(x, 100);
+      numGenerator2 = cuadradoMedio(x, 100);
+      printnum = numGenerator2;
     }
     if(option == 4) {
-      numGenerator = productosMedios(x, x1, 100);
+      numGenerator3 = productosMedios(x, x1, 100);
+      printnum = numGenerator3;
     }
     if(option == 5) {
-      numGenerator = congruenciaCuadratica(x, a, b, m, 100, c);
+      numGenerator4 = congruenciaCuadratica(x, a, b, m, 100, c);
+      printnum = numGenerator4;
     }
     if(option == 6) {
-      numGenerator = multiplicadorConstante(x, a, 100);
+      numGenerator5 = multiplicadorConstante(x, a, 100);
+      printnum = numGenerator5;
     }
     // ignore: no_leading_underscores_for_local_identifiers
     return Scaffold(
@@ -139,7 +159,11 @@ void exportList(List<int> list, String filename){
       floatingActionButton: FloatingActionButton(
         
         onPressed: () {
-          exportList(numGenerator, 'Archivos/numeros.xlsx');
+          exportList(numGenerator1, 'Archivos/numeros.xlsx');
+          exportList(numGenerator2, 'Archivos/numeros.xlsx');
+          exportList(numGenerator3, 'Archivos/numeros.xlsx');
+          exportList(numGenerator4, 'Archivos/numeros.xlsx');
+          exportList(numGenerator5, 'Archivos/numeros.xlsx');
         },
         tooltip: 'Exportar a excel',
         child: const Icon(Icons.archive_outlined),
@@ -157,11 +181,11 @@ void exportList(List<int> list, String filename){
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
               // Especificamos la cantidad de elementos que tendrá la lista
-              itemCount: numGenerator.length,
+              itemCount: printnum.length,
               // Definimos cómo se construirá cada elemento de la lista
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  title: Text(numGenerator[index].toString()),
+                  title: Text(printnum[index].toString()),
                 );
               },),
             ),

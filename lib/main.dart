@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:random_generator/index.dart';
 import 'package:random_generator/noUniform.dart';
 import 'package:random_generator/statistics.dart';
+import 'package:random_generator/defEstation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -83,6 +84,22 @@ class _Home extends State<Home> {
               ),
               child: const Text(
                 'Generación de variables no-uniformes', 
+                textAlign: TextAlign.center,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                option = 4;
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Estation()), // Navegar a la nueva pantalla
+              );
+              },
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(200, 50), // Establecer el tamaño del botón
+              ),
+              child: const Text(
+                'Aplicaciones de Simulación', 
                 textAlign: TextAlign.center,
               ),
             ),
